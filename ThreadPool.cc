@@ -39,12 +39,12 @@ void ThreadPool::Run(Task task)
 TheadPool::Task TheadPool::Take() const
 {
 	MutexLockGuard lock(mutex_);
-	while (notEmpty && runing)
+	while (tasks_.empty() && runing)
 	{
 		notEmpty.Wait();
 	}
 	Task tmp;
-	if (!notEmpty)
+	if (!tasks_.empty())
 	{
 		tmp = tasks.front();
 		tasks.pop_front();
